@@ -7,24 +7,18 @@ public class Day1Solution {
 
         for (String item : rotations) {
             char direction = item.charAt(0);
-            if (direction == 'L') {
-                dial -= Long.parseLong(item.substring(1));
-            } else if (direction == 'R') {
-                dial += Long.parseLong(item.substring(1));
+            long steps = Long.parseLong(item.substring(1));
+            long toZero = direction == 'L' ? dial : 100 - dial;
+
+            if (toZero == 0) {
+                toZero = 100;
             }
 
-            while (dial < 0) {
-                dial = 100 + dial;
+            if (steps >= toZero) {
+                count += 1 + (steps - toZero) / 100;
             }
 
-            while (dial > 99) {
-                dial = dial % 100;
-            }
-
-
-            if (dial == 0) {
-                count++;
-            }
+            dial = ((dial + (direction == 'L' ? -steps : steps)) % 100 + 100) % 100;
         }
 
         return count;
